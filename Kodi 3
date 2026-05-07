@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+        body { margin: 0; overflow: hidden; background: #001a33; font-family: Arial; }
+        /* O'pka indikatori */
+        #lung-ui {
+            position: absolute; top: 20px; left: 20px;
+            width: 60px; height: 80px; background: rgba(255,255,255,0.2);
+            border: 2px solid white; border-radius: 10px; overflow: hidden;
+        }
+        #oxygen-fill {
+            position: absolute; bottom: 0; width: 100%;
+            height: 100%; background: linear-gradient(to top, #ff3333, #33ccff);
+            transition: height 0.1s;
+        }
+        /* Joystick */
+        #joystick {
+            position: absolute; bottom: 50px; left: 50px;
+            width: 100px; height: 100px; background: rgba(255,255,255,0.3);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        }
+        #handle {
+            width: 40px; height: 40px; background: white; border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="lung-ui"><div id="oxygen-fill"></div></div>
+    <div id="joystick"><div id="handle"></div></div>
+
+    <script>
+        let oxygen = 100;
+        const oxygenBar = document.getElementById('oxygen-fill');
+
+        // Kislorodni kamaytirish funksiyasi
+        setInterval(() => {
+            if (oxygen > 0) {
+                oxygen -= 0.5;
+                oxygenBar.style.height = oxygen + "%";
+            }
+            if (oxygen < 20) oxygenBar.style.background = "red";
+        }, 100);
+
+        // Joystick harakati (oddiy simulyatsiya)
+        const handle = document.getElementById('handle');
+        document.addEventListener('touchmove', (e) => {
+            let touch = e.touches[0];
+            if (touch.clientX < 200 && touch.clientY > window.innerHeight - 200) {
+                handle.style.transform = `translate(${touch.clientX - 100}px, ${touch.clientY - (window.innerHeight - 100)}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
