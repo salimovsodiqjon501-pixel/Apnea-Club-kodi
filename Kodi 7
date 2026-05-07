@@ -1,0 +1,36 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class GameCore : MonoBehaviour
+{
+    [Header("Boshqaruv")]
+    public JoystickController joystick; 
+    public float swimSpeed = 4f;
+
+    [Header("O'pka Indikatori")]
+    public Image lungFill;
+    public float oxygen = 100f;
+
+    void Update()
+    {
+        // 1. Joystik orqali suzish
+        Vector3 move = new Vector3(joystick.Horizontal(), 0, joystick.Vertical());
+        transform.Translate(move * swimSpeed * Time.deltaTime, Space.World);
+        
+        if (move != Vector3.zero)
+            transform.forward = move;
+
+        // 2. Kislorod sarfi (Rasmdagi kabi)
+        if (oxygen > 0)
+        {
+            oxygen -= Time.deltaTime * 1.5f;
+            lungFill.fillAmount = oxygen / 100f;
+        }
+
+        // 3. Suv betiga chiqishni tekshirish
+        if (transform.position.y >= 0) 
+        {
+            oxygen = 100f; // Kislorod tiklanadi
+        }
+    }
+}
