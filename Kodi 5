@@ -1,0 +1,32 @@
+using UnityEngine;
+using UnityEngine.UI;
+
+public class OxygenSystem : MonoBehaviour
+{
+    public float maxOxygen = 100f;
+    public float currentOxygen;
+    public Image lungIcon; // O'pka rasmi uchun
+
+    void Start()
+    {
+        currentOxygen = maxOxygen;
+    }
+
+    void Update()
+    {
+        // Agar suv ostida bo'lsa, kislorod kamayadi
+        if (currentOxygen > 0)
+        {
+            currentOxygen -= Time.deltaTime * 2.0f; // Kamayish tezligi
+        }
+        
+        // UI ni yangilash (rangini o'zgartirish orqali)
+        float fillAmount = currentOxygen / maxOxygen;
+        lungIcon.fillAmount = fillAmount;
+
+        if (currentOxygen <= 0)
+        {
+            Debug.Log("O'yin tugadi: Nafas yetmadi!");
+        }
+    }
+}
