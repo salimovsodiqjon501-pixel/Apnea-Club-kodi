@@ -1,0 +1,43 @@
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro; // TextMeshPro ishlatilsa
+
+public class PlayerApnea : MonoBehaviour
+{
+    public float oxygen = 100f;
+    public float maxOxygen = 100f;
+    public float depth = 0f;
+    public Image lungFill; // O'pkaning qizil/ko'k qismi
+    public TextMeshProUGUI depthText;
+
+    void Update()
+    {
+        // Chuqurlikni hisoblash (o'yinchi Y o'qi bo'yicha pastga tushsa)
+        depth = Mathf.Abs(transform.position.y);
+        depthText.text = "Depth: -" + depth.ToString("F1") + "m";
+
+        // Suv ostida kislorod sarfi
+        if (oxygen > 0)
+        {
+            // Chuqurlashgani sari kislorod tezroq tugaydi
+            oxygen -= (1.0f + (depth * 0.1f)) * Time.deltaTime;
+            UpdateLungUI();
+        }
+        else
+        {
+            // Nafas tugaganda qilinadigan amal (masalan, hushdan ketish)
+            PlayerFaint();
+        }
+    }
+
+    void UpdateLungUI()
+    {
+        lungFill.fillAmount = oxygen / maxOxygen;
+    }
+
+    void PlayerFaint()
+    {
+        Debug.Log("Qahramon hushidan ketdi!");
+        // Bu yerga animatsiyani qo'shish mumkin
+    }
+}
