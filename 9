@@ -1,0 +1,36 @@
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Collections;
+
+public class SplashScreenLoader : MonoBehaviour
+{
+    public Image splashImage;      // Gul ko'ylakli qiz rasmi uchun
+    public Text loadingText;       // "Yuklanmoqda..." yozuvi uchun
+    public float waitTime = 3.0f;  // Rasm necha soniya turishi (masalan 3 soniya)
+
+    void Start()
+    {
+        // O'yin boshlanishi bilan yuklanishni boshlash
+        StartCoroutine(StartLoading());
+    }
+
+    IEnumerator StartLoading()
+    {
+        // Rasm biroz yorishib chiqishi uchun (Fade in)
+        splashImage.canvasRenderer.SetAlpha(0.0f);
+        splashImage.CrossFadeAlpha(1.0f, 1.5f, false);
+
+        float timer = 0;
+        while (timer < waitTime)
+        {
+            timer += Time.deltaTime;
+            // Nuqtalar aylanib turishi uchun
+            loadingText.text = "Yuklanmoqda" + new string('.', (int)(timer * 3) % 4);
+            yield return null;
+        }
+
+        // Yuklanish tugagach, asosiy o'yin sahnasiga o'tish
+        SceneManager.LoadScene("MainGameScene"); 
+    }
+}
